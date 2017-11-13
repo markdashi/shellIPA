@@ -7,7 +7,7 @@ CONFIGURATION='xxx'
 # 是否上传蒲公英
 UPLOADPGYER=false
 # 是否上传APPStore
-UPLOADAPPSTore=false
+UPLOADAPPStore=false
 
 #appid
 AppleID=""
@@ -16,8 +16,8 @@ AppleIDPWD=""
 
 DATE=`date +%Y%m%d_%H%M`
 SOURCEPATH=$( cd "$( dirname $0 )" && pwd)
-ARCHIVEPATH=${SOURCEPATH}/AutoBuildIPA/${BRANCHNAME}/${DATE}
-IPAPATH=${SOURCEPATH}/AutoBuildIPA/${BRANCHNAME}/${SCHEMENAME}_${DATE}
+ARCHIVEPATH=${SOURCEPATH}/AutoBuildIPA/${DATE}
+IPAPATH=${SOURCEPATH}/AutoBuildIPA/${SCHEMENAME}_${DATE}
 IPANAME=${SCHEMENAME}.ipa
 COMMIT_MSG="测试自动发布" #打包内容
 
@@ -35,9 +35,10 @@ COMMIT_MSG="测试自动发布" #打包内容
 
 echo "~~~~~~~~~~~~~~~~开始清理~~~~~~~~~~~~~~~~~~~"
 # 清理 避免出现一些莫名的错误
-xcodebuild clean -workspace ${WORKSPACENAME}.xcworkspace \
--configuration \
-${CONFIGURATION} -alltargets
+xcodebuild clean \
+-workspace ${WORKSPACENAME}.xcworkspace \
+-configuration ${CONFIGURATION} \
+-scheme ${SCHEMENAME}
 
 echo "~~~~~~~~~~~~~~~~开始构建archive~~~~~~~~~~~~~~~~~~~"
 # build xxx
@@ -79,7 +80,7 @@ fi
 
 
 # 上传AppStore
-if [ $UPLOADAPPSTore = true ]
+if [ $UPLOADAPPStore = true ]
 then
 altoolPath="/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
 ${altoolPath} --validate-app \
